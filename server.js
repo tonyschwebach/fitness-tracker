@@ -2,10 +2,10 @@
 
 const express = require("express");
 const mongoose = require("mongoose");
+// const workoutsController = require("./controllers/workoutsController");
 
-// require all models
-// const Place = require("./models/Place");
-// const db = require("./models");
+// require models
+// const Workout = require("./models/Workout");
 
 // create an instance of express
 const app = express();
@@ -40,26 +40,21 @@ connection.on("error", (err) => {
 
 
 // use routes on controllers
-// app.use(UserController);
+// app.use(workoutsController);
 
 // TODO: ABSTRACT THESE PLACES ROUTES OUT INTO A CONTROLLER
 app.get("/",(req,res)=>{
-  res.send("/index.html")
+  res.redirect("/index.html")
 })
 
-// app.get("/api/places", (req, res) => {
-//   Place.find().then((allPlaces) => {
-//     res.json(allPlaces);
-//   });
-// });
+app.get("/exercise",(req,res)=>{
+  res.redirect("/exercise.html")
+})
 
-// app.post("/api/places", (req, res) => {
-//   Place.create(req.body).then((newPlace) => {
-//     res.json(newPlace);
-//   });
-// });
+app.get("/stats",(req,res)=>{
+  res.redirect("/stats.html")
+})
 
-// TODO: ADD PUT AND DELETE ROUTES
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
