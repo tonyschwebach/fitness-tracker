@@ -1,12 +1,10 @@
 // require npm packages
-
 const express = require("express");
 const mongoose = require("mongoose");
-const db = require("./models");
-// const workoutsController = require("./controllers/workoutsController");
-
 // require models
-// const Workout = require("./models/Workout");
+const db = require("./models");
+//require controllers
+// const workoutsController = require("./controllers/workoutsController");
 
 // create an instance of express
 const app = express();
@@ -22,15 +20,12 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // connect to mongodb
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/workout",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  }
-);
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+});
 
 const connection = mongoose.connection;
 
@@ -70,18 +65,27 @@ app.get("/stats", (req, res) => {
 //   });
 // });
 
-// app.get("/api/workouts", (req, res) => {
-//   Workout.find().then((allWorkouts) => {
-//     res.json(allWorkouts);
-////// TODO .catch
-//   });
-// });
-
-app.post("/api/workouts", (req, res) => {
-  Workout.create(req.body).then((newWorkout) => {
-    res.json(newWorkout);
-  });
+// get all workouts
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find()
+    .then((allWorkouts) => {
+      res.json(allWorkouts);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
+
+// post new workout
+// app.post("/api/workouts", (req, res) => {
+//   db.Workout.create()
+//     .then((allWorkouts) => {
+//       res.json(allWorkouts);
+//     })
+//     .catch((err) => {
+//       res.json(err);
+//     });
+// });
 
 // app.put("/api/workouts");
 
