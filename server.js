@@ -69,23 +69,27 @@ app.get("/stats", (req, res) => {
 app.get("/api/workouts", (req, res) => {
   db.Workout.find()
     .then((allWorkouts) => {
+      console.log(allWorkouts)
       res.json(allWorkouts);
     })
     .catch((err) => {
+      console.log(err)
       res.json(err);
     });
 });
 
 // post new workout
-// app.post("/api/workouts", (req, res) => {
-//   db.Workout.create()
-//     .then((allWorkouts) => {
-//       res.json(allWorkouts);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
+app.post("/api/workouts", (req, res) => {
+  db.Workout.create(req.body)
+    .then((newWorkout) => {
+      console.log(newWorkout)
+      res.json(newWorkout);
+    })
+    .catch((err) => {
+      console.log(err)
+      res.json(err);
+    });
+});
 
 // app.put("/api/workouts");
 
