@@ -10,9 +10,6 @@ const WorkoutSchema = new Schema(
     },
 
     exercises: [
-      //   {
-      //   type: Array,
-      // },
       {
         type: {
           type: String,
@@ -57,7 +54,6 @@ const WorkoutSchema = new Schema(
 );
 
 // total workout duration
-// TODO: this isn't totaling correctly
 WorkoutSchema.virtual("totalDuration").get(function () {
   return this.exercises.reduce((acc, curr) => acc + curr.duration, 0);
 });

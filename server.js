@@ -95,8 +95,10 @@ app.put("/api/workouts/:id", (req, res) => {
 });
 
 // workouts in range
+// sort by day and limit to one week (7 days)
 app.get("/api/workouts/range", (req, res) => {
   db.Workout.find()
+  .sort({day:-1})
     .then((allWorkouts) => {
       res.json(allWorkouts);
     })
