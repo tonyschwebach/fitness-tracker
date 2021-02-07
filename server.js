@@ -54,7 +54,6 @@ app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "/stats.html"));
 });
 
-
 // get all workouts
 // index page gets all workouts then returns the last workout (length-1)
 app.get("/api/workouts", (req, res) => {
@@ -97,10 +96,18 @@ app.put("/api/workouts/:id", (req, res) => {
 // workouts in range
 // sort by day and limit to one week (7 days)
 app.get("/api/workouts/range", (req, res) => {
-  db.Workout.find()
-  .sort({day:-1})
-    .then((allWorkouts) => {
-      res.json(allWorkouts);
+  let oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 8);
+  // let oneWeekAgoUnix = Date.parse(oneWeekAgo);
+  db.Workout.find({})
+    .sort({ day: 1 })
+    .where("day")
+    .gte(oneWeekAgo)
+    // .where("day").gte(oneWeekAgoUnix)
+    // .limit(7)
+
+    .then((weekWorkouts) => {
+      res.json(weekWorkouts);
     })
     .catch((err) => {
       res.json(err);
