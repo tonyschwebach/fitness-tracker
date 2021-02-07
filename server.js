@@ -54,17 +54,6 @@ app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "/stats.html"));
 });
 
-// app.get("/api/places", (req, res) => {
-//   Place.find().then((allPlaces) => {
-//     res.json(allPlaces);
-//   });
-// });
-
-// app.post("/api/places", (req, res) => {
-//   Place.create(req.body).then((newPlace) => {
-//     res.json(newPlace);
-//   });
-// });
 
 // get all workouts
 // index page gets all workouts then returns the last workout (length-1)
@@ -82,8 +71,7 @@ app.get("/api/workouts", (req, res) => {
 // post new workout
 // on exercise page, initExercise creates a workout
 app.post("/api/workouts", (req, res) => {
-  console.log(req.body);
-  db.Workout.create({ exercises: req.body })
+  db.Workout.create(req.body)
     .then((newWorkout) => {
       res.json(newWorkout);
     })
@@ -93,9 +81,8 @@ app.post("/api/workouts", (req, res) => {
 });
 
 // update workout
+// add exercises when user clicks add or complete button
 app.put("/api/workouts/:id", (req, res) => {
-  console.log(req.params.id);
-  console.log(req.body);
   db.Workout.findByIdAndUpdate(req.params.id, {
     $push: { exercises: req.body },
   })
