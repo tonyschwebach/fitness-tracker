@@ -22,6 +22,12 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // connect to mongodb
+if(process.env.MONGODB_URI){
+  console.log(process.env.MONGODB_URI)
+} else{
+  console.log("env variable not found")
+}
+
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
