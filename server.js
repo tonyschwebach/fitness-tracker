@@ -1,6 +1,7 @@
 // require npm packages
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path")
 // require models
 const db = require("./models");
 //require controllers
@@ -40,17 +41,17 @@ connection.on("error", (err) => {
 // use routes on controllers
 // app.use(workoutsController);
 
-// TODO: ABSTRACT THESE PLACES ROUTES OUT INTO A CONTROLLER
+// TODO: ABSTRACT THESE PLACES ROUTES OUT INTO A CONTROLLER 
 app.get("/", (req, res) => {
-  res.redirect("/index.html");
+  res.sendFile(path.join(__dirname,"public","/index.html"));
 });
 
 app.get("/exercise", (req, res) => {
-  res.redirect("/exercise.html");
+  res.sendFile(path.join(__dirname,"public","/exercise.html"));
 });
 
 app.get("/stats", (req, res) => {
-  res.redirect("/stats.html");
+  res.sendFile(path.join(__dirname,"public","/stats.html"));
 });
 
 // app.get("/api/places", (req, res) => {
@@ -66,8 +67,10 @@ app.get("/stats", (req, res) => {
 // });
 
 // get all workouts
+// index page gets all workouts then returns the last workout (length-1)
 app.get("/api/workouts", (req, res) => {
   db.Workout.find()
+    // .populate("exercises")
     .then((allWorkouts) => {
       res.json(allWorkouts);
     })
@@ -78,7 +81,8 @@ app.get("/api/workouts", (req, res) => {
 
 // post new workout
 app.post("/api/workouts", (req, res) => {
-  db.Workout.create(req.body)
+  console.log(req.body)
+  db.Workout.create({ exercises: req.body })
     .then((newWorkout) => {
       res.json(newWorkout);
     })
@@ -88,16 +92,25 @@ app.post("/api/workouts", (req, res) => {
 });
 
 // update workout
+app.put("/api/workouts/:id", (req, res) => {
+  console.log(req.params.id)
+  console.log(req.body)
+  db.Workout.findByIdAndUpdate(req.params.id, req.body)
+    .then((newWorkout) => {
+      res.json(newWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
 
 // workouts in range
 app.get("/api/workouts/range", (req, res) => {
   db.Workout.find()
     .then((allWorkouts) => {
-      console.log(allWorkouts);
       res.json(allWorkouts);
     })
     .catch((err) => {
-      console.log(err);
       res.json(err);
     });
 });

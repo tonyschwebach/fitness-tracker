@@ -9,12 +9,16 @@ const WorkoutSchema = new Schema(
       default: Date.now,
     },
 
-    exercises: [
+    exercises: {
+      type: Array,
+    }
       // {
       //   type: Schema.Types.ObjectId,
       //   ref: "Exercise",
       // },
-    ],
+
+
+    ,
   },
   { toJSON: { virtuals: true } }
 );
@@ -29,9 +33,11 @@ WorkoutSchema.virtual("totalDuration").get(function () {
   return totalDuration;
 });
 
-// exercised performed
-// total distance
-// total weight
+// numExercises is calculated by length on client side workout.js
+// totalWeight is calculated on client side workout.js tally function
+// totalSets is calculated on client side workout.js tally function
+// totalReps is calculated on client side workout.js tally function
+// totalDistance is calculated on client side workout.js tally function
 
 const Workout = mongoose.model("Workout", WorkoutSchema);
 
