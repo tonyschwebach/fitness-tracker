@@ -1,7 +1,7 @@
 // require npm packages
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path")
+const path = require("path");
 // require models
 const db = require("./models");
 //require controllers
@@ -41,17 +41,17 @@ connection.on("error", (err) => {
 // use routes on controllers
 // app.use(workoutsController);
 
-// TODO: ABSTRACT THESE PLACES ROUTES OUT INTO A CONTROLLER 
+// TODO: ABSTRACT THESE PLACES ROUTES OUT INTO A CONTROLLER
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname,"public","/index.html"));
+  res.sendFile(path.join(__dirname, "public", "/index.html"));
 });
 
 app.get("/exercise", (req, res) => {
-  res.sendFile(path.join(__dirname,"public","/exercise.html"));
+  res.sendFile(path.join(__dirname, "public", "/exercise.html"));
 });
 
 app.get("/stats", (req, res) => {
-  res.sendFile(path.join(__dirname,"public","/stats.html"));
+  res.sendFile(path.join(__dirname, "public", "/stats.html"));
 });
 
 // app.get("/api/places", (req, res) => {
@@ -80,8 +80,9 @@ app.get("/api/workouts", (req, res) => {
 });
 
 // post new workout
+// on exercise page, initExercise creates a workout
 app.post("/api/workouts", (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   db.Workout.create({ exercises: req.body })
     .then((newWorkout) => {
       res.json(newWorkout);
@@ -93,11 +94,13 @@ app.post("/api/workouts", (req, res) => {
 
 // update workout
 app.put("/api/workouts/:id", (req, res) => {
-  console.log(req.params.id)
-  console.log(req.body)
-  db.Workout.findByIdAndUpdate(req.params.id, req.body)
-    .then((newWorkout) => {
-      res.json(newWorkout);
+  console.log(req.params.id);
+  console.log(req.body);
+  db.Workout.findByIdAndUpdate(req.params.id, {
+    $push: { exercises: req.body },
+  })
+    .then((newExercise) => {
+      res.json(newExercise);
     })
     .catch((err) => {
       res.json(err);
